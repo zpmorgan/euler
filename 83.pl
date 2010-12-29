@@ -3,23 +3,20 @@ use warnings;
 use strict;
 use List::Util 'min';
 
-#this happens to work, even though it allows moving in the wrong direction.
-
 my @graph = map {[split /,|\n/,$_]} <DATA>;
 my @pathy;
 my @border_nodes;
 my %seen = ("79 79" => 1);
 
-for (0..79){
-   $pathy[$_][79] = $graph[$_][79];
-   push @border_nodes, [$_,79];
-}
+$pathy[79][79] = $graph[79][79];
+push @border_nodes, [79,79];
+
 while(1){
    #sort by lowest score.
    @border_nodes = sort{$pathy[$a->[0]][$a->[1]] <=> $pathy[$b->[0]][$b->[1]]} @border_nodes;
    my $node = shift @border_nodes;
    my ($row,$col) = @$node;
-   if ('$row==0' and $col==0){
+   if ($row==0 and $col==0){
       print $pathy[$row][$col], "\n";# + $graph[$row][$col] 
       exit;
    }
